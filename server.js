@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const router = express.Router();
 const rateLimit = require('express-rate-limit');
 const { specs, swaggerUi } = require('./config/swagger');
 require('dotenv').config();
@@ -68,11 +69,12 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Health check endpoints (BOTH for compatibility)
-app.get('/health', (req, res) => {
+router.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'OK', 
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
@@ -117,8 +119,6 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 3300;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📊 Health check available at http://localhost:${PORT}/health`);
   console.log(`📊 Admin health check available at http://localhost:${PORT}/api/health`);
-  console.log(`🛒 Ecommerce API ready with colors, variants & preorders!`);
-  console.log(`👑 Admin dashboard can connect at http://localhost:3000`);
+  console.log(`👑 Admin dashboard can connect at http://localhost:3300`);
 });

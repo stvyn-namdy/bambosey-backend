@@ -11,6 +11,9 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "prisma db seed"
   },
+  "prisma": {
+  "seed": "node prisma/seed.js"
+  },
   "author": "SAIT Capstone",
   "license": "ISC",
   "dependencies": {

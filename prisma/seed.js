@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient, Prisma } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
@@ -131,61 +131,61 @@ async function main() {
     {
       name: 'Mood Tote Bag',
       description: 'A bag that accentuates your mood',
-      price: 22.99,
+      basePrice: new Prisma.Decimal(22.99),
       categoryId: 1,
       sku: 'TOTEBAG_001',
       images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'],
       stockStatus: 'IN_STOCK',
       allowPreorder: true,
-      preorderPrice: 21.99,
+      preorderPrice: new Prisma.Decimal(21.99),      // convert to Decimal
       variants: [
-        { color: 'Black', price: 21.99, quantity: 50, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] },
-        { color: 'White', price: 21.99, quantity: 30, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990g'] },
-        { color: 'Blue', price: 21.99, quantity: 0, stockStatus: 'OUT_OF_STOCK', images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] }
+        { color: 'Black', price: new Prisma.Decimal(21.99), quantity: 50, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] },
+        { color: 'White', price: new Prisma.Decimal(21.99), quantity: 30, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990g'] },
+        { color: 'Blue', price: new Prisma.Decimal(21.99), quantity: 0, stockStatus: 'OUT_OF_STOCK', images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] }
       ]
     },
     {
       name: 'Paradise Tote Bag',
       description: 'Tote bag signalling your paradise setting',
-      price: 29.99,
+      basePrice: new Prisma.Decimal(22.99),
       categoryId: 1,
       sku: 'TOTEBAG_002',
       images: ['https://bambosey.com/cdn/shop/files/photo-output_112.heic?v=1751346018&width=990'],
       stockStatus: 'IN_STOCK',
       allowPreorder: true,
-      preorderPrice: 21.99,
+      preorderPrice: new Prisma.Decimal(21.99),
       variants: [
-        { color: 'Black', price: 21.99, quantity: 50, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] },
-        { color: 'White', price: 21.99, quantity: 30, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990g'] },
-        { color: 'Blue', price: 21.99, quantity: 0, stockStatus: 'OUT_OF_STOCK', images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] }
+        { color: 'Black', price: new Prisma.Decimal(21.99), quantity: 50, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] },
+        { color: 'White', price: new Prisma.Decimal(21.99), quantity: 30, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990g'] },
+        { color: 'Blue', price: new Prisma.Decimal(21.99), quantity: 0, stockStatus: 'OUT_OF_STOCK', images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] }
       ]
     },
     {
       name: 'That Girl Tote Bag',
       description: 'For the IT Girl',
-      price: 22.99,
+      basePrice: new Prisma.Decimal(22.99),
       categoryId: 2,
       sku: 'TOTEBAG_003',
       images: ['https://example.com/nikeairmax.jpg'],
       stockStatus: 'IN_STOCK',
       allowPreorder: true,
-      preorderPrice: 21.99,
+      preorderPrice: new Prisma.Decimal(21.99),
       variants: [
-        { color: 'Black', price: 21.99, quantity: 50, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] },
-        { color: 'White', price: 21.99, quantity: 30, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990g'] },
-        { color: 'Blue', price: 21.99, quantity: 0, stockStatus: 'OUT_OF_STOCK', images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] }
+        { color: 'Black', price: new Prisma.Decimal(21.99), quantity: 50, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] },
+        { color: 'White', price: new Prisma.Decimal(21.99), quantity: 30, images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990g'] },
+        { color: 'Blue', price: new Prisma.Decimal(21.99), quantity: 0, stockStatus: 'OUT_OF_STOCK', images: ['https://bambosey.com/cdn/shop/files/photo-output123.heic?v=1751346312&width=990'] }
       ]
     },
     {
       name: 'Unbothered',
       description: 'UBNT Tote Bag for the discerning',
-      price: 29.99,
+      basePrice: new Prisma.Decimal(22.99),
       categoryId: 3,
       sku: 'TOTEBAG_004',
       images: ['https://example.com/jsbook.jpg'],
       stockStatus: 'PREORDER_ONLY',
       allowPreorder: true,
-      preorderPrice: 139.99,
+      preorderPrice: new Prisma.Decimal(21.99),
       expectedStockDate: new Date('2024-03-15'),
       preorderLimit: 100,
       variants: [
@@ -218,7 +218,7 @@ async function main() {
           productId: createdProduct.id,
           colorId,
           sizeId,
-          price: price || null,
+          price: price ? new Prisma.Decimal(price) : null,
           images: images || [],
           stockStatus: stockStatus || 'IN_STOCK',
           sku: `${product.sku}-${color || 'NONE'}-${size || 'NONE'}`.replace(/--/g, '-'),
@@ -255,11 +255,11 @@ async function main() {
         productId: blackTotebagVariant.productId,
         productVariantId: blackTotebagVariant.id,
         quantity: 2,
-        price: 21.99,
+        basePrice: new Prisma.Decimal(21.99),
         status: 'PENDING',
         expectedDate: new Date('2024-02-15'),
-        depositPaid: 10.00,
-        remainingAmount: 49.98
+        depositPaid: new Prisma.Decimal(10.00),
+        remainingAmount: new Prisma.Decimal(11.99)
       }
     });
     console.log('Sample preorder created');

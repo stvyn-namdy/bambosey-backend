@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Container
+  bambosey_database:
+    image: postgres:15-alpine
+    container_name: bambosey_db_container
+    environment:
+      POSTGRES_DB: bambosey_db
+      POSTGRES_USER: bambosey_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-BamBosey2024!}
+      POSTGRES_HOST_AUTH_METHOD: md5
+      # Performance tuning
+      POSTGRES_SHARED_BUFFERS: 256MB
+      POSTGRES_EFFECTIVE_CACHE_SIZE: 1GB
+      POSTGRES_MAINTENANCE_WORK_MEM: 64MB
+      POSTGRES_CHECKPOINT_COMPLETION_TARGET: 0.9
+      POSTGRES_WAL_BUFFERS: 16MB
+      POSTGRES_DEFAULT_STATISTICS_TARGET: 100
+    volumes:
+      # Persistent data storage
+      - bambosey_db_data:/var/lib/postgresql/data
+      
+      # Initialization scripts
+      - ./database/init:/docker-entrypoint-initdb.d
+      
+      # Custom PostgreSQL configuration
+      - ./database/postgresql.conf:/etc/postgresql/postgresql.conf
+      
+      # Backup directory
+      - ./database/backups:/backups
+      
+      # Logs directory
+      - ./database/logs:/var/log/postgresql
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    networks:
+      - bambosey_db_network
+    restart: unless-stopped
+    
+    # Health check to ensure database is ready
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bambosey_admin -d bambosey_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.50'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    
+    # Labels for organization
+    labels:
+      - "project=bambosey"
+      - "service=database"
+      - "environment=development"
+
+  # pgAdmin for database management (optional)
+  bambosey_pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: bambosey_pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@bambosey.com
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin123}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    volumes:
+      - bambosey_pgadmin_data:/var/lib/pgadmin
+      - ./database/pgadmin:/pgadmin4/servers.json
+    ports:
+      - "${PGADMIN_PORT:-8080}:80"
+    depends_on:
+      bambosey_database:
+        condition: service_healthy
+    networks:
+      - bambosey_db_network
+    restart: unless-stopped
+    labels:
+      - "project=bambosey"
+      - "service=pgadmin"
+      - "environment=development"
+
+volumes:
+  # Persistent volume for database data
+  bambosey_db_data:
+    driver: local
+    name: bambosey_database_data
+  
+  # Persistent volume for pgAdmin data
+  bambosey_pgadmin_data:
+    driver: local
+    name: bambosey_pgadmin_data
+
+networks:
+  # Dedicated network for database services
+  bambosey_db_network:
+    driver: bridge
+    name: bambosey_database_network
