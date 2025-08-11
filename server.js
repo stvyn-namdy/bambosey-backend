@@ -25,10 +25,6 @@ const app = express();
 
 // Security middleware
 app.use(helmet());
-app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001'], // Add admin dashboard origin
-  credentials: true
-}));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -40,9 +36,9 @@ app.use(limiter);
 
 //CORS policy
 app.use(cors({
-  origin: 'https://main.d20y1cce0y15zp.amplifyapp.com',
-  methods: 'GET,POST,PUT,DELETE',
-  credentials: true, 
+  origin: ['http://localhost:3000', 'https://main.d20y1cce0y15zp.amplifyapp.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
 
 // Body parsing middleware
