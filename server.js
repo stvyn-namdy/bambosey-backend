@@ -40,6 +40,13 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+//CORS policy
+app.use(cors({
+  origin: 'https://main.d20y1cce0y15zp.amplifyapp.com',
+  methods: 'GET,POST,PUT,DELETE',
+  credentials: true, 
+}));
+
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
