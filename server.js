@@ -20,6 +20,8 @@ const wishlistRoutes = require('./routes/wishlist');
 const adminRoutes = require('./routes/admin');
 const colorRoutes = require('./routes/colors');
 const preorderRoutes = require('./routes/preorders');
+const findSimilar = require('./routes/findSimilar');
+
 
 const app = express();
 
@@ -103,7 +105,9 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/colors', colorRoutes);
-app.use('/api/preorders', preorderRoutes); 
+app.use('/api/preorders', preorderRoutes);
+app.use('/api', findSimilar);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

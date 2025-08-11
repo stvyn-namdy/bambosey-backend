@@ -12,12 +12,12 @@
     "prisma:seed": "prisma db seed"
   },
   "prisma": {
-  "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js"
   },
   "author": "SAIT Capstone",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.11.1",
+    "@prisma/client": "^6.13.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.0.1",
@@ -36,6 +36,6 @@
   "devDependencies": {
     "@types/node": "^24.0.10",
     "nodemon": "^3.1.10",
-    "prisma": "^6.11.1"
+    "prisma": "^6.13.0"
   }
 }
