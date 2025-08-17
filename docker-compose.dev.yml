@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: bambosey_ecommerce
+    environment:
+      POSTGRES_DB: bambosey
+      POSTGRES_USER: stvyn
+      POSTGRES_PASSWORD: bambosey
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
