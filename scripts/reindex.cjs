@@ -51,7 +51,7 @@ async function main() {
   });
 
   if (!docs.length) {
-    console.log('No variants with SKUs found to index.');
+    console.log('No variants with SKUs found to index. Please try again later...');
     return;
   }
 
