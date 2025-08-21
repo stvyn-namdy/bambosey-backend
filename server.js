@@ -37,9 +37,23 @@ const limiter = rateLimit({
 app.use(limiter);
 
 //CORS policy
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://main.d20y1cce0y15zp.amplifyapp.com', // admin dashboard
+  'https://main.dq8m98d9dqw4r.amplifyapp.com'   // client dashboard
+];
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://main.d20y1cce0y15zp.amplifyapp.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: function(origin, callback){
+    // allow requests with no origin (like mobile apps or curl)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 
